@@ -75,8 +75,14 @@ WSGI_APPLICATION = "bancaBD.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': 'est_e4935785',
+        'USER': 'est_e4935785',
+        'PASSWORD': 'dB.e4935785',
+        'HOST': 'ubiwan.epsevg.upc.edu',
+        'OPTIONS': {             
+            'options': '-c search_path=practica'         
+        }
     }
 }
 
