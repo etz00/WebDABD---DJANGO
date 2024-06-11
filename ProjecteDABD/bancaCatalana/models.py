@@ -8,6 +8,9 @@ class Ciutat(models.Model):
     def __str__(self):
         return self.nom
     
+    class Meta:
+        db_table = 'ciutat'
+    
     
 class OficinaCentral(models.Model):
     id_oficina = models.AutoField(primary_key=True)
