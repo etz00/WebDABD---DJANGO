@@ -1,14 +1,14 @@
-<!-- clients.html -->
+<!-- comptes.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clients</title>
+    <title>Comptes</title>
 </head>
 <body>
-    <h1>Llistat de Clients</h1>
+    <h1>Llistat de Comptes</h1>
     <ul>
-        {% for client in page_obj.object_list %}
-            <li>NIF: {{ client.nif }} - Nom: {{ client.nom }} - Telèfon: {{ client.telefon }} - Adreça: {{ client.adreca }} - Sucursal ID: {{ client.id_sucursal.id_sucursal }}</li>
+        {% for compte in page_obj.object_list %}
+            <li>IBAN: {{ compte.iban }} - Data obertura: {{ compte.data_obertura }} - Saldo: {{ compte.saldo }} - Entitat: {{ compte.entidad }} - NIF: {{ compte.nif }}</li>
         {% endfor %}
     </ul>
 
@@ -31,4 +31,3 @@
     </div>
 </body>
 </html>
-

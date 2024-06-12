@@ -28,7 +28,7 @@ urlpatterns = [
     path('clients/', views.llista_clients, name='llista_clients'),
     path('particulars/', views.particulars, name='particulars'),
     path('empreses/', views.empreses, name='empreses'),
-    path('comptes/', views.comptes, name='comptes'),
-    path('operacions/', views.operacions, name='operacions'),
+    path('comptes/', views.llista_comptes, name='llista_comptes'),
+    path('operacions/', views.llista_operacions, name='llista_operacions'),
     path('transferencies/', views.transferencies, name='transferencies'),
 ]

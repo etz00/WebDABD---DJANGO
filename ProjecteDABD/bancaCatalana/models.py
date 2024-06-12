@@ -81,23 +81,29 @@ class Empresa(models.Model):
     
     
 class Compte(models.Model):
-    IBAN = models.CharField(max_length=34, primary_key=True)
+    iban = models.CharField(max_length=34, primary_key=True)
     data_obertura = models.DateField()
     saldo = models.DecimalField(max_digits=15, decimal_places=2)
-    entitat = models.CharField(max_length=100)
-    NIF = models.ForeignKey(Client, on_delete=models.RESTRICT)
+    entidad = models.CharField(max_length=100)
+    #nif = models.ForeignKey(Client, on_delete=models.RESTRICT)
 
     def __str__(self):
-        return self.IBAN
+        return self.iban
+    
+    class Meta:
+        db_table = 'compte'
     
     
 class Operacio(models.Model):
-    idOperacio = models.AutoField(primary_key=True)
+    id_operacio = models.AutoField(primary_key=True)
     data = models.DateField()
-    IBAN_origen = models.ForeignKey(Compte, on_delete=models.RESTRICT)
+    #IBAN_origen = models.ForeignKey(Compte, on_delete=models.RESTRICT)
 
     def __str__(self):
-        return f'Operacio {self.idOperacio}'
+        return f'Operacio {self.id_operacio}'
+
+    class Meta:
+        db_table = 'operacio'
 
 
 class Efectiu(models.Model):

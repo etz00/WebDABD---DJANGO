@@ -32,7 +32,7 @@ def sucursals(request):
 
 def llista_clients(request):
     clients_list = Client.objects.all()
-    paginator = Paginator(clients_list, 10)  # Mostra 10 clients per pàgina
+    paginator = Paginator(clients_list, 20)  # Mostra 20 clients per pàgina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -56,18 +56,27 @@ def empreses(request):
     return render(request, 'empreses.html', {'empreses': empreses})
 
 
-def comptes(request):
-    comptes = Compte.objects.all()
-    for compte in comptes:
-        print(compte.IBAN)
-    return render(request, 'comptes.html', {'comptes': comptes})
+def llista_comptes(request):
+    comptes_list = Compte.objects.all()
+    paginator = Paginator(comptes_list, 20)  # Mostra 10 clients per pàgina
 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    print(page_obj.object_list)  # Línia de depuració
+    
+    return render(request, 'comptes.html', {'page_obj': page_obj})
 
-def operacions(request):
-    operacions = Operacio.objects.all()
-    for operacio in operacions:
-        print(operacio.idOperacio)
-    return render(request, 'operacions.html', {'operacions': operacions})
+def llista_operacions(request):
+    operacions_list = Operacio.objects.all()
+    paginator = Paginator(operacions_list, 20)  # Mostra 10 clients per pàgina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    print(page_obj.object_list)  # Línia de depuració
+    
+    return render(request, 'operacions.html', {'page_obj': page_obj})
 
 
 def transferencies(request):

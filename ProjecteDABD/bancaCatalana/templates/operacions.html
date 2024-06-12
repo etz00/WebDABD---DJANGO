@@ -1,14 +1,14 @@
-<!-- clients.html -->
+<!-- operacions.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clients</title>
+    <title>Operacions</title>
 </head>
 <body>
-    <h1>Llistat de Clients</h1>
+    <h1>Llistat d'Operacions</h1>
     <ul>
-        {% for client in page_obj.object_list %}
-            <li>NIF: {{ client.nif }} - Nom: {{ client.nom }} - Telèfon: {{ client.telefon }} - Adreça: {{ client.adreca }} - Sucursal ID: {{ client.id_sucursal.id_sucursal }}</li>
+        {% for operacio in page_obj.object_list %}
+            <li>Operació ID: {{ operacio.id_operacio }} - Data: {{ operacio.data }}</li>
         {% endfor %}
     </ul>
 
@@ -31,4 +31,3 @@
     </div>
 </body>
 </html>
-

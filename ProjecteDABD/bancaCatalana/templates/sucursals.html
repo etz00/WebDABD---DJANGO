@@ -5,7 +5,7 @@
     <title>Sucursals</title>
 </head>
 <body>
-    <h1>Llista de Sucursals</h1>
+    <h1>Llistat de Sucursals</h1>
     <ul>
         {% for sucursal in sucursals %}
             <li>Sucursal ID: {{ sucursal.id_sucursal }} - Carrer: {{ sucursal.carrer }} - Ciutat: {{ sucursal.nom_ciutat.nom }} - Oficina Central: {{ sucursal.id_oficina.id_oficina }} - Gestor: {{ sucursal.id_empleat.nom }}</li>
