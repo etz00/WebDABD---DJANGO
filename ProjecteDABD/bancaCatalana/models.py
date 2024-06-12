@@ -13,43 +13,55 @@ class Ciutat(models.Model):
     
     
 class OficinaCentral(models.Model):
-    id_oficina = models.AutoField(primary_key=True)
+    id_oficina = models.CharField(max_length=100)
     empleats = models.IntegerField()
-    nom = models.ForeignKey(Ciutat, on_delete=models.RESTRICT)
+    nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.CASCADE, db_column='nom_ciutat')
 
     def __str__(self):
         return f'Oficina Central {self.id_oficina}'
 
+    class Meta:
+        db_table = 'oficina_central'
+        
 
 class Gestor(models.Model):
-    idEmpleat = models.AutoField(primary_key=True)
+    id_empleat = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=100)
-    dataInici = models.DateField()
+    data_inici = models.DateField()
 
     def __str__(self):
         return self.nom
+    
+    class Meta:
+        db_table = 'gestor'
     
     
 class Sucursal(models.Model):
     id_sucursal = models.AutoField(primary_key=True)
     carrer = models.CharField(max_length=100)
-    nom = models.ForeignKey(Ciutat, on_delete=models.RESTRICT)
-    id_oficina = models.ForeignKey(OficinaCentral, on_delete=models.RESTRICT)
-    id_empleat = models.OneToOneField(Gestor, on_delete=models.RESTRICT)
+    #nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.RESTRICT)
+    #id_oficina = models.ForeignKey(OficinaCentral, on_delete=models.RESTRICT)
+    #id_empleat = models.OneToOneField(Gestor, on_delete=models.RESTRICT)
 
     def __str__(self):
         return f'Sucursal {self.id_sucursal}'
     
+    class Meta:
+        db_table = 'sucursal'
+    
     
 class Client(models.Model):
-    NIF = models.CharField(max_length=20, primary_key=True)
+    nif = models.CharField(max_length=20, primary_key=True)
     nom = models.CharField(max_length=100)
     telefon = models.CharField(max_length=20)
     adreca = models.CharField(max_length=200)
-    id_sucursal = models.ForeignKey(Sucursal, on_delete=models.RESTRICT)
+    #id_sucursal = models.ForeignKey(Sucursal, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.nom
+    
+    class Meta:
+        db_table = 'client'
 
 
 class Particular(models.Model):

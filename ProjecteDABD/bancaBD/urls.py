@@ -22,4 +22,13 @@ from bancaCatalana import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('ciutats/', views.ciutats, name='ciutats'),
+    path('oficines_centrals/', views.oficines_centrals, name='oficines_centrals'),
+    path('gestors/', views.gestors, name='gestors'),
+    path('sucursals/', views.sucursals, name='sucursals'),
+    path('clients/', views.clients, name='clients'),
+    path('particulars/', views.particulars, name='particulars'),
+    path('empreses/', views.empreses, name='empreses'),
+    path('comptes/', views.comptes, name='comptes'),
+    path('operacions/', views.operacions, name='operacions'),
+    path('transferencies/', views.transferencies, name='transferencies'),
 ]

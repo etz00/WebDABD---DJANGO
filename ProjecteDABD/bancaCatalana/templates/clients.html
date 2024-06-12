@@ -1,0 +1,15 @@
+<!-- sucursals.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clients</title>
+</head>
+<body>
+    <h1>Llista de Clients</h1>
+    <ul>
+        {% for client in clients %}
+            <li>NIF: {{ client.nif }} - Nom: {{ client.nom }} - Telèfon: {{ client.telefon }} - Adreça: {{ client.adreca }} - Sucursal ID: {{ client.id_sucursal.id_sucursal }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
