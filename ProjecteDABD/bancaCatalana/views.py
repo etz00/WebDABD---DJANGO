@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from .models import Ciutat, OficinaCentral, Gestor, Sucursal, Client, Particular, Empresa, Compte, Operacio, Efectiu, Transferencia, CarrecComissions, RelacioTransferencies
 
 def ciutats(request):
@@ -29,9 +30,16 @@ def sucursals(request):
     return render(request, 'sucursals.html', {'sucursals': sucursals})
 
 
-def clients(request):
-    clients = Client.objects.all()
-    return render(request, 'clients.html', {'clients': clients})
+def llista_clients(request):
+    clients_list = Client.objects.all()
+    paginator = Paginator(clients_list, 10)  # Mostra 10 clients per pàgina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    print(page_obj.object_list)  # Línia de depuració
+    
+    return render(request, 'clients.html', {'page_obj': page_obj})
 
 
 def particulars(request):

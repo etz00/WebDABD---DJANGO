@@ -7,9 +7,28 @@
 <body>
     <h1>Llista de Clients</h1>
     <ul>
-        {% for client in clients %}
+        {% for client in page_obj.object_list %}
             <li>NIF: {{ client.nif }} - Nom: {{ client.nom }} - Telèfon: {{ client.telefon }} - Adreça: {{ client.adreca }} - Sucursal ID: {{ client.id_sucursal.id_sucursal }}</li>
         {% endfor %}
     </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; primera</a>
+                <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Pàgina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">següent</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </body>
 </html>
+
