@@ -1,0 +1,15 @@
+<!-- particulars.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Particulars</title>
+</head>
+<body>
+    <h1>Llistat de Particulars</h1>
+    <ul>
+        {% for particular in particulars %}
+            <li>NIF: {{ particular.nif }} - Ingressos anuals: {{ particular.ingressos_anuals }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

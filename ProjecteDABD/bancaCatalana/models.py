@@ -10,18 +10,20 @@ class Ciutat(models.Model):
     
     class Meta:
         db_table = 'ciutat'
-    
-    
+
+
 class OficinaCentral(models.Model):
     id_oficina = models.CharField(max_length=100)
     empleats = models.IntegerField()
-    nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.CASCADE, db_column='nom_ciutat')
+    nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.CASCADE, db_column='nom_ciutat', null=True)
 
     def __str__(self):
         return f'Oficina Central {self.id_oficina}'
 
     class Meta:
         db_table = 'oficina_central'
+
+
         
 
 class Gestor(models.Model):
@@ -39,15 +41,16 @@ class Gestor(models.Model):
 class Sucursal(models.Model):
     id_sucursal = models.AutoField(primary_key=True)
     carrer = models.CharField(max_length=100)
-    #nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.RESTRICT)
-    #id_oficina = models.ForeignKey(OficinaCentral, on_delete=models.RESTRICT)
-    #id_empleat = models.OneToOneField(Gestor, on_delete=models.RESTRICT)
+    #nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.RESTRICT, db_column='nom')
+    id_oficina = models.ForeignKey(OficinaCentral, on_delete=models.RESTRICT, db_column='id_oficina', default = 0)
+    id_empleat = models.OneToOneField(Gestor, on_delete=models.RESTRICT, db_column='id_empleat', unique=True, default=1)
 
     def __str__(self):
         return f'Sucursal {self.id_sucursal}'
-    
+
     class Meta:
         db_table = 'sucursal'
+
     
     
 class Client(models.Model):
@@ -65,19 +68,22 @@ class Client(models.Model):
 
 
 class Particular(models.Model):
-    NIF = models.OneToOneField(Client, on_delete=models.CASCADE, primary_key=True)
+    #nif = models.OneToOneField(Client, on_delete=models.CASCADE, primary_key=True, db_column='nif')
     ingressos_anuals = models.DecimalField(max_digits=15, decimal_places=2)
 
     def __str__(self):
-        return f'Particular {self.NIF}'
+        return f'Particular {self.nif}'
 
+    class Meta:
+        db_table = 'particular'
+        
 
 class Empresa(models.Model):
-    NIF = models.OneToOneField(Client, on_delete=models.CASCADE, primary_key=True)
+    nif = models.OneToOneField(Client, on_delete=models.CASCADE, primary_key=True)
     facturacio = models.DecimalField(max_digits=15, decimal_places=2)
 
     def __str__(self):
-        return f'Empresa {self.NIF}'
+        return f'Empresa {self.nif}'
     
     
 class Compte(models.Model):

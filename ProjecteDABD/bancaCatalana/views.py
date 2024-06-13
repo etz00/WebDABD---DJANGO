@@ -25,8 +25,11 @@ def gestors(request):
 
 def sucursals(request):
     sucursals = Sucursal.objects.all()
-    #for sucursal in sucursals:
-    #    print(sucursal.nom)
+    for sucursal in sucursals:
+        if sucursal.nom_ciutat is not None:
+            print(sucursal.nom_ciutat.nom)
+        else:
+            print("No té ciutat assignada")
     return render(request, 'sucursals.html', {'sucursals': sucursals})
 
 
@@ -45,14 +48,14 @@ def llista_clients(request):
 def particulars(request):
     particulars = Particular.objects.all()
     for particular in particulars:
-        print(particular.NIF)
+        print(particular.nif)
     return render(request, 'particulars.html', {'particulars': particulars})
 
 
 def empreses(request):
     empreses = Empresa.objects.all()
     for empresa in empreses:
-        print(empresa.NIF)
+        print(empresa.nif)
     return render(request, 'empreses.html', {'empreses': empreses})
 
 
