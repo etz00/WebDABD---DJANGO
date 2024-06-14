@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Ciutats</title>
 </head>
 <body>
-    <h1>Llistat de Ciutats</h1>
+    <h1>Ciutats</h1>
     <ul>
         {% for ciutat in ciutats %}
-            <li>{{ ciutat.nom }}</li>
+            <li>
+                {{ ciutat.nom }}
+                <a href="{% url 'editar_ciutat' ciutat.nom %}">Editar</a>
+                <form action="{% url 'eliminar_ciutat' ciutat.nom %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
 </body>
 </html>
+

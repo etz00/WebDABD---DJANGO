@@ -5,11 +5,24 @@
     <title>Oficines Centrals</title>
 </head>
 <body>
-    <h1>Llistat d'Oficines Centrals</h1>
+    <h1>Oficines Centrals</h1>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+{% endfor %}
     <ul>
         {% for oficina in oficines %}
-            <li>Oficina ID: {{ oficina.id_oficina }} - Empleats: {{ oficina.empleats }} - Ciutat: {{ oficina.nom_ciutat_fk.nom }}</li>
+            <li>
+                ID: {{ oficina.id_oficina }} - Número d'empleats: {{ oficina.empleats }} - Ciutat: {{ oficina.nom_ciutat }}
+                <a href="{% url 'editar_oficina' oficina.id_oficina %}">Editar</a>
+                <form action="{% url 'eliminar_oficina' oficina.id_oficina %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
 </body>
 </html>
+

@@ -2,6 +2,7 @@ from django.db import models
 
 #Models a crear
 
+
 class Ciutat(models.Model):
     nom = models.CharField(max_length=100, primary_key=True)
 
@@ -23,8 +24,6 @@ class OficinaCentral(models.Model):
     class Meta:
         db_table = 'oficina_central'
 
-
-        
 
 class Gestor(models.Model):
     id_empleat = models.AutoField(primary_key=True)

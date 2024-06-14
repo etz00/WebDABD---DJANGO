@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pàgina d'inici</title>
+</head>
+<body>
+    <h1>Benvingut a l'aplicació de gestió bancària de Banca Catalana</h1>
+    <p>Aquesta aplicació et permet gestionar diversos aspectes del banc, incloent ciutats, oficines centrals, gestors, sucursals, clients, comptes, operacions i transferències.</p>
+
+    <h2>Seccions disponibles</h2>
+    <ul>
+        <li><a href="{% url 'ciutats' %}">Ciutats</a>: Visualitza les ciutats on el banc té presència.</li>
+        <li><a href="{% url 'oficines_centrals' %}">Oficines centrals</a>: Gestiona les oficines centrals del banc.</li>
+        <li><a href="{% url 'gestors' %}">Gestors</a>: Visualitza i administra els gestors de comptes.</li>
+        <li><a href="{% url 'sucursals' %}">Sucursals</a>: Gestiona les sucursals bancàries.</li>
+        <li><a href="{% url 'llista_clients' %}">Clients</a>: Consulta la llista de clients del banc.</li>
+        <li><a href="{% url 'particulars' %}">Particulars</a>: Gestiona els comptes de clients particulars.</li>
+        <li><a href="{% url 'empreses' %}">Empreses</a>: Gestiona els comptes de clients empresarials.</li>
+        <li><a href="{% url 'llista_comptes' %}">Comptes</a>: Visualitza la llista de comptes bancaris.</li>
+        <li><a href="{% url 'llista_operacions' %}">Operacions</a>: Consulta les operacions realitzades als comptes.</li>
+        <li><a href="{% url 'transferencies' %}">Transferències</a>: Gestiona les transferències bancàries.</li>
+    </ul>
+</body>
+</html>
