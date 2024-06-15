@@ -107,10 +107,17 @@ def particulars(request):
 
 
 def empreses(request):
-    empreses = Empresa.objects.all()
-    for empresa in empreses:
-        print(empresa.nif)
-    return render(request, 'empreses.html', {'empreses': empreses})
+    empreses_list = Empresa.objects.all()
+    print(empreses_list)  # Línea de depuración
+    paginator = Paginator(empreses_list, 20)  # Mostra 20 empreses per pàgina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    print(page_obj.object_list)  # Línia de depuració
+    
+    return render(request, 'empreses.html', {'page_obj': page_obj})
+
 
 
 def llista_comptes(request):
@@ -137,10 +144,13 @@ def llista_operacions(request):
 
 
 def transferencies(request):
-    transferencies = Transferencia.objects.all()
-    for transferencia in transferencies:
-        print(transferencia.idOperacio)
-    return render(request, 'transferencies.html', {'transferencies': transferencies})
+    transferencies_list = Transferencia.objects.all()
+    paginator = Paginator(transferencies_list, 20)  # Mostrará 20 transferencias por página
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'transferencies.html', {'page_obj': page_obj})
 
 
 

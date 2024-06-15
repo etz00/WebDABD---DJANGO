@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Empreses</title>
+    <title>Transferències</title>
 </head>
 <body>
-    <h1>Llistat d'Empreses</h1>
+    <h1>Llistat de Transferències</h1>
     <ul>
-        {% for empresa in page_obj.object_list %}
-            <li>NIF: {{ empresa.nif }} - Facturació: {{ empresa.facturacio }}</li>
+        {% for transferencia in page_obj.object_list %}
+            <li>ID Operació: {{ transferencia.id_operacio }} - IBAN Destí: {{ transferencia.IBAN_desti }} - Import Real: {{ transferencia.import_real }}</li>
         {% endfor %}
     </ul>
 
