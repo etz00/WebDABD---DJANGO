@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Ciutat</title>
+</head>
+<body>
+    <h1>Editar Ciutat</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="nom">Nom ciutat:</label>
+        <input type="" id="nom" name="nom" value="{{ ciutat.nom }}" required><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'ciutats' %}">Tornar</a>
+</body>
+</html>

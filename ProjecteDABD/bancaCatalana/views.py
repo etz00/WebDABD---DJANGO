@@ -10,33 +10,57 @@ def home(request):
 
 
 def ciutats(request):
-    ciutats = Ciutat.objects.all()
-    for ciutat in ciutats:
-        print(ciutat.nom)
+    query = request.GET.get('search', '')
+    if query:
+        ciutats = Ciutat.objects.filter(nom__icontains=query)
+    else:
+        ciutats = Ciutat.objects.all()
+    
     return render(request, 'ciutats.html', {'ciutats': ciutats})
 
 
 def editar_ciutat(request, nom):
-    ciutat = get_object_or_404(Ciutat, nom=nom)
+    ciutat = get_object_or_404(Ciutat, nom=nom)    
     if request.method == 'POST':
-        nou_nom = request.POST['nom']
-        ciutat.modificar(nou_nom)
-        return redirect('ciutats')
+        nou_nom = request.POST.get('nom')
+        #nom_ciutat = request.POST.get('nom_ciutat')
+
+        # Assegurar que els inputs no són buits
+        if nou_nom:
+            #nova_ciutat = get_object_or_404(Ciutat, nom=nom_ciutat)
+            ciutat.nom = nou_nom
+            ciutat.save()
+            return redirect('ciutats')
     return render(request, 'editar_ciutat.html', {'ciutat': ciutat})
 
 
 def eliminar_ciutat(request, nom):
     ciutat = get_object_or_404(Ciutat, nom=nom)
     if request.method == 'POST':
-        ciutat.eliminar()
+        try:
+            ciutat.delete()
+            messages.success(request, "Ciutat eliminada correctament.")
+        except ProtectedError:
+            messages.error(request, "No es pot eliminar la ciutat perquè té oficines centrals associades.")
+
         return redirect('ciutats')
+
     return render(request, 'ciutats.html', {'ciutats': Ciutat.objects.all()})
 
 
-def oficines_centrals(request):
+#def oficines_centrals(request):
     oficines = OficinaCentral.objects.all()
     #for oficina in oficines:
     #    print(oficina.nom)
+    return render(request, 'oficines_centrals.html', {'oficines': oficines})
+
+def oficines_centrals(request):
+    query = request.GET.get('search', '')
+    if query:
+        oficines = OficinaCentral.objects.filter(nom_ciutat__nom__icontains=query)
+    else:
+        oficines = OficinaCentral.objects.all()
+
     return render(request, 'oficines_centrals.html', {'oficines': oficines})
 
 def editar_oficina(request, id_oficina):

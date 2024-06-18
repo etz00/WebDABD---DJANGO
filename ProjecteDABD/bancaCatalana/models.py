@@ -10,7 +10,7 @@ class Ciutat(models.Model):
         db_table = 'ciutat'
 
 class OficinaCentral(models.Model):
-    id_oficina = models.AutoField(primary_key=True)
+    id_oficina = models.CharField(primary_key=True)
     empleats = models.IntegerField()
     nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.CASCADE, db_column='nom_ciutat', null=True)
 

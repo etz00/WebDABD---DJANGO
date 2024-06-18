@@ -1,4 +1,3 @@
-<!-- oficines_centrals.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,11 +5,18 @@
 </head>
 <body>
     <h1>Oficines Centrals</h1>
+
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Cerca per ciutat" value="{{ request.GET.search }}">
+        <button type="submit">Cercar</button>
+    </form>
+
     {% for message in messages %}
     <div class="alert alert-{{ message.tags }}">
         {{ message }}
     </div>
-{% endfor %}
+    {% endfor %}
+
     <ul>
         {% for oficina in oficines %}
             <li>
