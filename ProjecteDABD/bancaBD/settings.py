@@ -74,28 +74,18 @@ WSGI_APPLICATION = "bancaBD.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "est_e4935785",
-#         "USER": "est_e4935785",
-#         "PASSWORD": "dB.e4935785",
-#         "HOST": "ubiwan.epsevg.upc.edu",
-#         "OPTIONS": {             
-#             "options": "-c search_path=practica"         
-#         }
-#     }
-# }
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'C:/Users/amayor/Documents/UNIVERSIDAD/DABD/Practica/bank.db',  # Ruta completa a tu base de datos
-    }
-}
-
-
-
+     "default": {
+         "ENGINE": "django.db.backends.postgresql",
+         "NAME": "est_e4935785",
+         "USER": "est_e4935785",
+         "PASSWORD": "dB.e4935785",
+         "HOST": "ubiwan.epsevg.upc.edu",
+         "OPTIONS": {             
+             "options": "-c search_path=practica"         
+         }
+     }
+ }
 
 
 # Password validation
