@@ -79,7 +79,7 @@ def editar_oficina(request, id_oficina):
 
         # Asegurar que los inputs no son vacíos
         if nou_id_oficina and nous_empleats and nom_ciutat:
-            if OficinaCentral.objects.filter(id_oficina=nou_id_oficina).exists() and nou_id_oficina != oficina.id_oficina:
+            if OficinaCentral.objects.filter(id_oficina=nou_id_oficina).exclude(id_oficina=oficina.id_oficina).exists():
                 messages.error(request, "El ID de l'oficina ja existeix.")
             else:
                 try:
@@ -131,13 +131,55 @@ def nova_oficina(request):
 
 
 def gestors(request):
-    gestors_list = Gestor.objects.all()
+    query = request.GET.get('search', '')
+    if query:
+        gestors_list = Gestor.objects.filter(nom__icontains=query)
+    else:
+        gestors_list = Gestor.objects.all()
+    
     paginator = Paginator(gestors_list, 25)  # Mostra 25 gestors per pàgina
-
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'gestors.html', {'page_obj': page_obj})
+
+
+
+def afegir_gestor(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        data_inici = request.POST.get('data_inici')
+        if nom and data_inici:
+            Gestor.objects.create(nom=nom, data_inici=data_inici)
+            messages.success(request, "Gestor afegit correctament.")
+            return redirect('gestors')
+    return render(request, 'afegir_gestor.html')
+
+
+def editar_gestor(request, id_empleat):
+    gestor = get_object_or_404(Gestor, id_empleat=id_empleat)
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        data_inici = request.POST.get('data_inici')
+        if nom and data_inici:
+            gestor.nom = nom
+            gestor.data_inici = data_inici
+            gestor.save()
+            messages.success(request, "Gestor actualitzat correctament.")
+            return redirect('gestors')
+    return render(request, 'editar_gestor.html', {'gestor': gestor})
+
+
+def eliminar_gestor(request, id_empleat):
+    gestor = get_object_or_404(Gestor, id_empleat=id_empleat)
+    if request.method == 'POST':
+        try:
+            gestor.delete()
+            messages.success(request, "Gestor eliminat correctament.")
+        except ProtectedError:
+            messages.error(request, "No es pot eliminar el gestor perquè té associacions.")
+        return redirect('gestors')
+    return render(request, 'gestors.html', {'gestors': Gestor.objects.all()})
 
 
 def sucursals(request):
