@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Afegir Client</title>
+</head>
+<body>
+    <h1>Afegir Client</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="nif">NIF:</label>
+        <input type="text" id="nif" name="nif" required><br>
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" required><br>
+        <label for="telefon">Telèfon:</label>
+        <input type="text" id="telefon" name="telefon"><br>
+        <label for="adreca">Adreça:</label>
+        <input type="text" id="adreca" name="adreca"><br>
+        <label for="id_sucursal">Sucursal:</label>
+        <select id="id_sucursal" name="id_sucursal">
+            {% for sucursal in sucursals %}
+                <option value="{{ sucursal.id_sucursal }}">{{ sucursal.carrer }} - {{ sucursal.nom_ciutat.nom }}</option>
+            {% endfor %}
+        </select><br>
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'llista_clients' %}">Cancelar</a>
+</body>
+</html>

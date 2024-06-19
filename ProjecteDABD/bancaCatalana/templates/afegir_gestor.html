@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Afegir Gestor</title>
+</head>
+<body>
+    <h1>Afegir Gestor</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" required><br><br>
+        <label for="data_inici">Data d'Inici:</label>
+        <input type="date" id="data_inici" name="data_inici" required><br><br>
+        <button type="submit">Afegir</button>
+    </form>
+    <a href="{% url 'gestors' %}">Cancelar</a>
+</body>
+</html>

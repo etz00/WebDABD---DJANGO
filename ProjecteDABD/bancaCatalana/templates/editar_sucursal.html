@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Sucursal</title>
+</head>
+<body>
+    <h1>Editar Sucursal: {{ sucursal.id_sucursal }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="carrer">Carrer:</label>
+        <input type="text" id="carrer" name="carrer" value="{{ sucursal.carrer }}" required><br><br>
+
+        <label for="nom_ciutat">Ciutat:</label>
+        <select id="nom_ciutat" name="nom_ciutat" required>
+            {% for ciutat in ciutats %}
+                <option value="{{ ciutat.nom }}" {% if sucursal.nom_ciutat.nom == ciutat.nom %}selected{% endif %}>{{ ciutat.nom }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="id_oficina">Oficina Central:</label>
+        <select id="id_oficina" name="id_oficina" required>
+            {% for oficina in oficines %}
+                <option value="{{ oficina.id_oficina }}" {% if sucursal.id_oficina.id_oficina == oficina.id_oficina %}selected{% endif %}>{{ oficina.id_oficina }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="id_empleat">Gestor:</label>
+        <select id="id_empleat" name="id_empleat" required>
+            {% for gestor in gestors %}
+                <option value="{{ gestor.id_empleat }}" {% if sucursal.id_empleat.id_empleat == gestor.id_empleat %}selected{% endif %}>{{ gestor.nom }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'sucursals' %}">Cancelar</a>
+</body>
+</html>

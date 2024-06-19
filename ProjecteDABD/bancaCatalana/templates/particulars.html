@@ -29,9 +29,23 @@
 </head>
 <body>
     <h1>Llistat de Particulars</h1>
+    
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Cerca pel NIF" value="{{ request.GET.search }}">
+        <button type="submit">Cercar</button>
+        <a href="{% url 'afegir_particular' %}" class="btn">Afegir Particular</a>
+    </form>
+
     <ul>
-        {% for particular in page_obj %}
-            <li>NIF: {{ particular.nif }} - Ingressos anuals: {{ particular.ingressos_anuals }}</li>
+        {% for particular in page_obj.object_list %}
+            <li>
+                NIF: {{ particular.nif.nif }} - Ingressos Anuals: {{ particular.ingressos_anuals }}
+                <a href="{% url 'editar_particular' particular.nif.nif %}">Editar</a>
+                <form action="{% url 'eliminar_particular' particular.nif.nif %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
 

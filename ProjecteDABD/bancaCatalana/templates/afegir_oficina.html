@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Editar Oficina Central</title>
+    <title>Nova Oficina Central</title>
 </head>
 <body>
-    <h1>Editar Oficina Central: {{ oficina.id_oficina }}</h1>
+    <h1>Nova Oficina Central</h1>
     <form method="post">
         {% csrf_token %}
         <label for="id_oficina">ID Oficina:</label>
-        <input type="text" id="id_oficina" name="id_oficina" value="{{ oficina.id_oficina }}" required><br><br>
+        <input type="text" id="id_oficina" name="id_oficina" required><br><br>
 
         <label for="empleats">Nombre d'empleats:</label>
-        <input type="number" id="empleats" name="empleats" value="{{ oficina.empleats }}" required><br><br>
+        <input type="number" id="empleats" name="empleats" required><br><br>
 
         <label for="nom_ciutat">Ciutat:</label>
         <select id="nom_ciutat" name="nom_ciutat" required>
             {% for ciutat in ciutats %}
-                <option value="{{ ciutat.nom }}" {% if oficina.nom_ciutat.nom == ciutat.nom %}selected{% endif %}>{{ ciutat.nom }}</option>
+                <option value="{{ ciutat.nom }}">{{ ciutat.nom }}</option>
             {% endfor %}
         </select><br><br>
 

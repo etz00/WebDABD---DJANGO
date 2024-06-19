@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Client</title>
+</head>
+<body>
+    <h1>Editar Client: {{ client.nom }}</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="nif">NIF:</label>
+        <input type="text" id="nif" name="nif" value="{{ client.nif }}" readonly><br>
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" value="{{ client.nom }}" required><br>
+        <label for="telefon">Telèfon:</label>
+        <input type="text" id="telefon" name="telefon" value="{{ client.telefon }}"><br>
+        <label for="adreca">Adreça:</label>
+        <input type="text" id="adreca" name="adreca" value="{{ client.adreca }}"><br>
+        <label for="id_sucursal">Sucursal:</label>
+        <select id="id_sucursal" name="id_sucursal">
+            {% for sucursal in sucursals %}
+                <option value="{{ sucursal.id_sucursal }}" {% if sucursal.id_sucursal == client.id_sucursal.id_sucursal %}selected{% endif %}>{{ sucursal.carrer }} - {{ sucursal.nom_ciutat.nom }}</option>
+            {% endfor %}
+        </select><br>
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'llista_clients' %}">Cancelar</a>
+</body>
+</html>
