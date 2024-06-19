@@ -93,8 +93,8 @@ class Compte(models.Model):
 class Operacio(models.Model):
     id_operacio = models.AutoField(primary_key=True)
     data = models.DateField()
-    import_real = models.DecimalField(max_digits=15, decimal_places=2)
-    IBAN_origen = models.ForeignKey(Compte, on_delete=models.RESTRICT, db_column='IBAN_origen')
+    importt = models.DecimalField(max_digits=15, decimal_places=2)
+    iban_origen = models.ForeignKey(Compte, on_delete=models.RESTRICT, db_column='iban_origen')
 
     def __str__(self):
         return f'Operacio {self.id_operacio}'

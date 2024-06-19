@@ -37,5 +37,7 @@ urlpatterns = [
     path('empreses/', views.empreses, name='empreses'),
     path('comptes/', views.llista_comptes, name='llista_comptes'),
     path('operacions/', views.llista_operacions, name='llista_operacions'),
+    path('operacions/editar/<str:id_operacio>/', views.editar_operacio, name='editar_operacio'),
+    path('operacions/eliminar/<str:id_operacio>/', views.eliminar_oficina, name='eliminar_operacio'),
     path('transferencies/', views.transferencies, name='transferencies'),
 ]

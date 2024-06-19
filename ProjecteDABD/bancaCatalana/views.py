@@ -200,6 +200,48 @@ def llista_operacions(request):
     return render(request, 'operacions.html', {'page_obj': page_obj})
 
 
+def editar_operacio(request, id_operacio):
+    operacio = get_object_or_404(Operacio, id_operacio=id_operacio)
+    if request.method == 'POST':
+        nou_id_operacio = request.POST.get('id_operacio')
+        nova_data = request.POST.get('data')
+        nou_import = request.POST.get('importt')
+        #nou_iban = request.POST.get('iban_origen')
+        
+        # Asegurar que los inputs no son vacíos
+        if nou_id_operacio and nova_data and nou_import:
+            if Operacio.objects.filter(id_operacio=nou_id_operacio).exists() and nou_id_operacio != operacio.id_operacio:
+                messages.error(request, "El ID de l'operacio ja existeix.")
+            else:
+                try:
+                    #ciutat = get_object_or_404(Ciutat, nom=nom_ciutat)
+                    operacio.id_operacio = nou_id_operacio
+                    operacio.data = nova_data
+                    operacio.importt = nou_import
+                    #operacio.iban_origen = nou_iban
+                    operacio.save()
+                    messages.success(request, "Operacio actualitzada correctament.")
+                    return redirect('operacions')
+                except Compte.DoesNotExist:
+                    messages.error(request, "El compte proporcionat no existeix.")
+    return render(request, 'editar_operacio.html', {'operacio': operacio})
+
+
+def eliminar_operacio(request, id_operacio):
+    operacio = get_object_or_404(Operacio, id_operacio=id_operacio)
+
+    if request.method == 'POST':
+        try:
+            operacio.delete()
+            messages.success(request, "Operacio eliminada correctament.")
+        except ProtectedError:
+            messages.error(request, "No es pot eliminar l'Operacio perquè té sucursals associades.")
+
+        return redirect('operacions')
+
+    return render(request, 'operacions.html', {'operacions': Operacio.objects.all()})
+
+
 def transferencies(request):
     transferencies_list = Transferencia.objects.all()
     paginator = Paginator(transferencies_list, 25)  # Mostra 25 transferències per pàgina

@@ -31,7 +31,14 @@
     <h1>Llistat d'Operacions</h1>
     <ul>
         {% for operacio in page_obj.object_list %}
-            <li>Operació ID: {{ operacio.id_operacio }} - Data: {{ operacio.data }} - Import: {{ operacio.import_real }} - IBAN Origen: {{ operacio.IBAN_origen }}</li>
+            <li>
+                Operació ID: {{ operacio.id_operacio }} - Data: {{ operacio.data }} - Import: {{ operacio.importt }} - IBAN Origen: {{ operacio.iban_origen }}
+                <a href="{% url 'editar_operacio' operacio.id_operacio %}">Editar</a>
+                <form action="{% url 'eliminar_operacio' operacio.id_operacio %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
 

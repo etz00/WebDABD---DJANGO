@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Operació</title>
+</head>
+<body>
+    <h1>Editar Operació: {{ operacio.id_operacio }}</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="id_operacio">ID Operació:</label>
+        <input type="text" id="id_operacio" name="id_operacio" value="{{ operacio.id_operacio }}" required>
+
+        <label for="data">Data:</label>
+        <input type="date" id="number" name="data" value="{{ operacio.data }}" >
+
+        <label for="importt">Import:</label>
+        <input type="number" id="importt" name="importt" value="{{ operacio.importt }}" required>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'llista_operacions' %}">Cancelar</a>
+</body>
+</html>
