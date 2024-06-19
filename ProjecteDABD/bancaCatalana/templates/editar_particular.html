@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Particular</title>
+</head>
+<body>
+    <h1>Editar Particular: {{ particular.nif.nif }}</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="ingressos_anuals">Ingressos Anuals:</label>
+        <input type="text" id="ingressos_anuals" name="ingressos_anuals" value="{{ particular.ingressos_anuals }}">
+        <br>
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'particulars' %}">Cancelar</a>
+</body>
+</html>

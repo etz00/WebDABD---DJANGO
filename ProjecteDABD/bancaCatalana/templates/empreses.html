@@ -29,9 +29,23 @@
 </head>
 <body>
     <h1>Llistat d'Empreses</h1>
+    
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Cerca pel NIF" value="{{ request.GET.search }}">
+        <button type="submit">Cercar</button>
+        <a href="{% url 'afegir_empresa' %}" class="btn">Afegir Empresa</a>
+    </form>
+
     <ul>
         {% for empresa in page_obj.object_list %}
-            <li>NIF: {{ empresa.nif }} - Facturació: {{ empresa.facturacio }}</li>
+            <li>
+                NIF: {{ empresa.nif.nif }} - Facturació: {{ empresa.facturacio }}
+                <a href="{% url 'editar_empresa' empresa.nif.nif %}">Editar</a>
+                <form action="{% url 'eliminar_empresa' empresa.nif.nif %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
 

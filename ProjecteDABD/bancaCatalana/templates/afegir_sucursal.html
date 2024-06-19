@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nova Sucursal</title>
+</head>
+<body>
+    <h1>Nova Sucursal</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="carrer">Carrer:</label>
+        <input type="text" id="carrer" name="carrer" required><br><br>
+
+        <label for="nom_ciutat">Ciutat:</label>
+        <select id="nom_ciutat" name="nom_ciutat" required>
+            {% for ciutat in ciutats %}
+                <option value="{{ ciutat.nom }}">{{ ciutat.nom }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="id_oficina">Oficina Central:</label>
+        <select id="id_oficina" name="id_oficina" required>
+            {% for oficina in oficines %}
+                <option value="{{ oficina.id_oficina }}">{{ oficina.id_oficina }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="id_empleat">Gestor:</label>
+        <select id="id_empleat" name="id_empleat" required>
+            {% for gestor in gestors %}
+                <option value="{{ gestor.id_empleat }}">{{ gestor.nom }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'sucursals' %}">Cancelar</a>
+</body>
+</html>
