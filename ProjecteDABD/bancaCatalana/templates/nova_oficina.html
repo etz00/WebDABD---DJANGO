@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nova Oficina Central</title>
+</head>
+<body>
+    <h1>Nova Oficina Central</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="id_oficina">ID Oficina:</label>
+        <input type="text" id="id_oficina" name="id_oficina" required>
+
+        <label for="empleats">Número d'empleats:</label>
+        <input type="number" id="empleats" name="empleats" required>
+
+        <label for="nom_ciutat">Ciutat:</label>
+        <input type="text" id="nom_ciutat" name="nom_ciutat" required>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'oficines_centrals' %}">Cancelar</a>
+</body>
+</html>

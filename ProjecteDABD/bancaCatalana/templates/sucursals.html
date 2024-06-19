@@ -1,15 +1,60 @@
-<!-- sucursals.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Sucursals</title>
+    <style>
+        .pagination {
+            margin: 20px 0;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Llistat de Sucursals</h1>
     <ul>
-        {% for sucursal in sucursals %}
+        {% for sucursal in page_obj %}
             <li>Sucursal ID: {{ sucursal.id_sucursal }} - Carrer: {{ sucursal.carrer }} - Ciutat: {{ sucursal.nom_ciutat.nom }} - Oficina Central: {{ sucursal.id_oficina.id_oficina }} - Gestor: {{ sucursal.id_empleat.nom }}</li>
         {% endfor %}
     </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; primera</a>
+                <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">siguiente</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <div>
+        <a href="{% url 'home' %}" class="btn">Volver al inicio</a>
+    </div>
 </body>
 </html>

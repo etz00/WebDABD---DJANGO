@@ -10,7 +10,7 @@ class Ciutat(models.Model):
         db_table = 'ciutat'
 
 class OficinaCentral(models.Model):
-    id_oficina = models.CharField(primary_key=True)
+    id_oficina = models.CharField(max_length=20, primary_key=True)  # Asegúrate de especificar el max_length
     empleats = models.IntegerField()
     nom_ciutat = models.ForeignKey(Ciutat, on_delete=models.CASCADE, db_column='nom_ciutat', null=True)
 
@@ -56,7 +56,6 @@ class Client(models.Model):
     
     class Meta:
         db_table = 'client'
-
 
 class Particular(models.Model):
     nif = models.OneToOneField(Client, on_delete=models.CASCADE, primary_key=True, db_column='nif')
@@ -125,7 +124,7 @@ class Transferencia(models.Model):
         db_table = 'transferencia'
 
 class CarrecComissions(models.Model):
-    id_operacio = models.OneToOneField(Operacio, on_delete=models.CASCADE, db_column='id_operacio', null=True, blank=True)
+    id_operacio = models.OneToOneField(Operacio, on_delete=models.CASCADE, primary_key=True, db_column='id_operacio')
     import_real = models.DecimalField(max_digits=15, decimal_places=2)
 
     def __str__(self):
@@ -133,15 +132,3 @@ class CarrecComissions(models.Model):
 
     class Meta:
         db_table = 'carrec_comissions'
-
-class RelacioTransferencies(models.Model):
-    id_operacio1 = models.ForeignKey(Transferencia, related_name='relacio1', on_delete=models.CASCADE, db_column='id_operacio1')
-    id_operacio2 = models.ForeignKey(Transferencia, related_name='relacio2', on_delete=models.CASCADE, db_column='id_operacio2')
-    suma = models.DecimalField(max_digits=15, decimal_places=2)
-
-    class Meta:
-        db_table = 'relacio_transferencies'
-        unique_together = (('id_operacio1', 'id_operacio2'),)
-
-    def __str__(self):
-        return f'RelacioTransferencies {self.id_operacio1} - {self.id_operacio2}'

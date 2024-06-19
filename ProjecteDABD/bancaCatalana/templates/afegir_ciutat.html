@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Editar Ciutat</title>
+    <title>Afegir Ciutat</title>
     <style>
         .messages {
             position: fixed;
@@ -21,14 +21,14 @@
     </style>
 </head>
 <body>
-    <h1>Editar Ciutat: {{ ciutat.nom }}</h1>
+    <h1>Afegir Ciutat</h1>
     <form method="post" action="">
         {% csrf_token %}
         <label for="nom">Nom:</label>
-        <input type="text" id="nom" name="nom" value="{{ ciutat.nom }}">
+        <input type="text" id="nom" name="nom" required>
         <button type="submit">Guardar</button>
     </form>
-    <a href="{% url 'ciutats' %}">Cancelar</a>
+    <a href="{% url 'ciutats' %}">Tornar</a>
 
     {% if messages %}
     <div class="messages">

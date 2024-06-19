@@ -23,9 +23,11 @@ urlpatterns = [
     path('', views.home, name='home'),  # Pàgina d'inici
     path("admin/", admin.site.urls),
     path('ciutats/', views.ciutats, name='ciutats'),
+    path('ciutats/afegir/', views.afegir_ciutat, name='afegir_ciutat'),
     path('ciutats/editar/<str:nom>/', views.editar_ciutat, name='editar_ciutat'),
     path('ciutats/eliminar/<str:nom>/', views.eliminar_ciutat, name='eliminar_ciutat'),
     path('oficines_centrals/', views.oficines_centrals, name='oficines_centrals'),
+    path('oficines_centrals/nova/', views.nova_oficina, name='nova_oficina'),
     path('oficines_centrals/editar/<str:id_oficina>/', views.editar_oficina, name='editar_oficina'),
     path('oficines_centrals/eliminar/<str:id_oficina>/', views.eliminar_oficina, name='eliminar_oficina'),
     path('gestors/', views.gestors, name='gestors'),

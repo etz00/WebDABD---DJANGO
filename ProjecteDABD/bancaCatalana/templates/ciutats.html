@@ -5,15 +5,16 @@
 </head>
 <body>
     <h1>Ciutats</h1>
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Cerca pel nom" value="{{ request.GET.search }}">
+        <button type="submit">Cercar</button>
+        <a href="{% url 'afegir_ciutat' %}">
+            <button type="button">Afegir</button>
+        </a>
+    </form>
+
     <ul>
-
-        <form method="get" action="">
-            <input type="text" name="search" placeholder="Cerca pel nom" value="{{ request.GET.search }}">
-            <button type="submit">Cercar</button>
-        </form>
-
-
-        {% for ciutat in ciutats %}
+        {% for ciutat in page_obj %}
             <li>
                 {{ ciutat.nom }}
                 <a href="{% url 'editar_ciutat' ciutat.nom %}">Editar</a>
@@ -24,6 +25,25 @@
             </li>
         {% endfor %}
     </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; primera</a>
+                <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Pàgina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">següent</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <a href="{% url 'home' %}">Inici</a>
 </body>
 </html>
-

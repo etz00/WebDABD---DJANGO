@@ -1,8 +1,31 @@
-<!-- clients.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Clients</title>
+    <style>
+        .pagination {
+            margin: 20px 0;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Llistat de Clients</h1>
@@ -29,6 +52,9 @@
             {% endif %}
         </span>
     </div>
+
+    <div>
+        <a href="{% url 'home' %}" class="btn">Volver al inicio</a>
+    </div>
 </body>
 </html>
-

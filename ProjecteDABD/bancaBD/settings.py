@@ -29,25 +29,24 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "bancaCatalana"
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'bancaCatalana',
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = "bancaBD.urls"
@@ -74,18 +73,25 @@ WSGI_APPLICATION = "bancaBD.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#      "default": {
+#          "ENGINE": "django.db.backends.postgresql",
+#          "NAME": "est_e4935785",
+#          "USER": "est_e4935785",
+#          "PASSWORD": "dB.e4935785",
+#          "HOST": "ubiwan.epsevg.upc.edu",
+#          "OPTIONS": {             
+#              "options": "-c search_path=practica"         
+#          }
+#      }
+#  }
+
 DATABASES = {
-     "default": {
-         "ENGINE": "django.db.backends.postgresql",
-         "NAME": "est_e4935785",
-         "USER": "est_e4935785",
-         "PASSWORD": "dB.e4935785",
-         "HOST": "ubiwan.epsevg.upc.edu",
-         "OPTIONS": {             
-             "options": "-c search_path=practica"         
-         }
-     }
- }
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": r"C:\Users\amayor\Documents\UNIVERSIDAD\DABD\Practica\bank.db",
+    }
+}
 
 
 # Password validation
@@ -128,3 +134,13 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Message tags
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.WARNING: 'warning',
+    messages.SUCCESS: 'success',
+    messages.INFO: 'info',
+}

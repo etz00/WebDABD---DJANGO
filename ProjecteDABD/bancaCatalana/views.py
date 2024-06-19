@@ -1,38 +1,38 @@
-from pyexpat.errors import messages
+from django.contrib import messages
 from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
-from .models import Ciutat, OficinaCentral, Gestor, Sucursal, Client, Particular, Empresa, Compte, Operacio, Efectiu, Transferencia, CarrecComissions, RelacioTransferencies
+from .models import Ciutat, OficinaCentral, Gestor, Sucursal, Client, Particular, Empresa, Compte, Operacio, Efectiu, Transferencia, CarrecComissions
 
 
 def home(request):
     return render(request, 'home.html')
 
-
 def ciutats(request):
     query = request.GET.get('search', '')
     if query:
-        ciutats = Ciutat.objects.filter(nom__icontains=query)
+        ciutats_list = Ciutat.objects.filter(nom__icontains=query)
     else:
-        ciutats = Ciutat.objects.all()
+        ciutats_list = Ciutat.objects.all()
     
-    return render(request, 'ciutats.html', {'ciutats': ciutats})
-
+    paginator = Paginator(ciutats_list, 25)  # Mostra 25 ciutats per pàgina
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'ciutats.html', {'page_obj': page_obj})
 
 def editar_ciutat(request, nom):
     ciutat = get_object_or_404(Ciutat, nom=nom)    
     if request.method == 'POST':
         nou_nom = request.POST.get('nom')
-        #nom_ciutat = request.POST.get('nom_ciutat')
-
-        # Assegurar que els inputs no són buits
-        if nou_nom:
-            #nova_ciutat = get_object_or_404(Ciutat, nom=nom_ciutat)
-            ciutat.nom = nou_nom
-            ciutat.save()
-            return redirect('ciutats')
+        if nou_nom and nou_nom != nom:
+            if Ciutat.objects.filter(nom=nou_nom).exists():
+                messages.error(request, "El nom de la ciutat ja existeix.")
+            else:
+                Ciutat.objects.filter(nom=nom).update(nom=nou_nom)
+                messages.success(request, "Ciutat modificada correctament.")
+                return redirect('ciutats')
     return render(request, 'editar_ciutat.html', {'ciutat': ciutat})
-
 
 def eliminar_ciutat(request, nom):
     ciutat = get_object_or_404(Ciutat, nom=nom)
@@ -42,26 +42,33 @@ def eliminar_ciutat(request, nom):
             messages.success(request, "Ciutat eliminada correctament.")
         except ProtectedError:
             messages.error(request, "No es pot eliminar la ciutat perquè té oficines centrals associades.")
-
         return redirect('ciutats')
-
     return render(request, 'ciutats.html', {'ciutats': Ciutat.objects.all()})
 
-
-#def oficines_centrals(request):
-    oficines = OficinaCentral.objects.all()
-    #for oficina in oficines:
-    #    print(oficina.nom)
-    return render(request, 'oficines_centrals.html', {'oficines': oficines})
+def afegir_ciutat(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        if nom:
+            if Ciutat.objects.filter(nom=nom).exists():
+                messages.error(request, "La ciutat ja existeix.")
+            else:
+                Ciutat.objects.create(nom=nom)
+                messages.success(request, "Ciutat afegida correctament.")
+                return redirect('ciutats')
+    return render(request, 'afegir_ciutat.html')
 
 def oficines_centrals(request):
     query = request.GET.get('search', '')
     if query:
-        oficines = OficinaCentral.objects.filter(nom_ciutat__nom__icontains=query)
+        oficines_list = OficinaCentral.objects.filter(nom_ciutat__nom__icontains=query)
     else:
-        oficines = OficinaCentral.objects.all()
-
-    return render(request, 'oficines_centrals.html', {'oficines': oficines})
+        oficines_list = OficinaCentral.objects.all()
+    
+    paginator = Paginator(oficines_list, 25)  # Mostra 25 oficines per pàgina
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'oficines_centrals.html', {'page_obj': page_obj})
 
 def editar_oficina(request, id_oficina):
     oficina = get_object_or_404(OficinaCentral, id_oficina=id_oficina)
@@ -70,15 +77,26 @@ def editar_oficina(request, id_oficina):
         nous_empleats = request.POST.get('empleats')
         nom_ciutat = request.POST.get('nom_ciutat')
 
-        # Assegurar que els inputs no són buits
+        # Asegurar que los inputs no son vacíos
         if nou_id_oficina and nous_empleats and nom_ciutat:
-            nova_ciutat = get_object_or_404(Ciutat, nom=nom_ciutat)
-            oficina.id_oficina = nou_id_oficina
-            oficina.empleats = nous_empleats
-            oficina.nom_ciutat = nova_ciutat
-            oficina.save()
-            return redirect('oficines_centrals')
+            if OficinaCentral.objects.filter(id_oficina=nou_id_oficina).exists() and nou_id_oficina != oficina.id_oficina:
+                messages.error(request, "El ID de l'oficina ja existeix.")
+            else:
+                try:
+                    ciutat = get_object_or_404(Ciutat, nom=nom_ciutat)
+                    oficina.id_oficina = nou_id_oficina
+                    oficina.empleats = nous_empleats
+                    oficina.nom_ciutat = ciutat
+                    oficina.save()
+                    messages.success(request, "Oficina Central actualitzada correctament.")
+                    return redirect('oficines_centrals')
+                except Ciutat.DoesNotExist:
+                    messages.error(request, "La ciutat proporcionada no existeix.")
     return render(request, 'editar_oficina.html', {'oficina': oficina})
+
+
+
+
 
 def eliminar_oficina(request, id_oficina):
     oficina = get_object_or_404(OficinaCentral, id_oficina=id_oficina)
@@ -94,87 +112,99 @@ def eliminar_oficina(request, id_oficina):
 
     return render(request, 'oficines_centrals.html', {'oficines': OficinaCentral.objects.all()})
 
+def nova_oficina(request):
+    if request.method == 'POST':
+        id_oficina = request.POST.get('id_oficina')
+        empleats = request.POST.get('empleats')
+        nom_ciutat = request.POST.get('nom_ciutat')
+
+        if id_oficina and empleats and nom_ciutat:
+            if OficinaCentral.objects.filter(id_oficina=id_oficina).exists():
+                messages.error(request, "El ID de l'oficina ja existeix.")
+            else:
+                ciutat = get_object_or_404(Ciutat, nom=nom_ciutat)
+                OficinaCentral.objects.create(id_oficina=id_oficina, empleats=empleats, nom_ciutat=ciutat)
+                messages.success(request, "Oficina Central creada correctament.")
+                return redirect('oficines_centrals')
+    return render(request, 'nova_oficina.html')
+
+
+
 def gestors(request):
-    gestors = Gestor.objects.all()
-    for gestor in gestors:
-        print(gestor.nom)
-    return render(request, 'gestors.html', {'gestors': gestors})
+    gestors_list = Gestor.objects.all()
+    paginator = Paginator(gestors_list, 25)  # Mostra 25 gestors per pàgina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'gestors.html', {'page_obj': page_obj})
 
 
 def sucursals(request):
-    sucursals = Sucursal.objects.all()
-    for sucursal in sucursals:
-        if sucursal.nom_ciutat is not None:
-            print(sucursal.nom_ciutat.nom)
-        else:
-            print("No té ciutat assignada")
-    return render(request, 'sucursals.html', {'sucursals': sucursals})
+    sucursals_list = Sucursal.objects.all()
+    paginator = Paginator(sucursals_list, 25)  # Mostra 25 sucursals per pàgina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'sucursals.html', {'page_obj': page_obj})
 
 
 def llista_clients(request):
     clients_list = Client.objects.all()
-    paginator = Paginator(clients_list, 20)  # Mostra 20 clients per pàgina
+    paginator = Paginator(clients_list, 25)  # Mostra 25 clients per pàgina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
-    print(page_obj.object_list)  # Línia de depuració
     
     return render(request, 'clients.html', {'page_obj': page_obj})
 
 
 def particulars(request):
-    particulars = Particular.objects.all()
-    for particular in particulars:
-        print(particular.nif)
-    return render(request, 'particulars.html', {'particulars': particulars})
+    particulars_list = Particular.objects.all()
+    paginator = Paginator(particulars_list, 25)  # Mostra 25 particulars per pàgina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'particulars.html', {'page_obj': page_obj})
 
 
 def empreses(request):
     empreses_list = Empresa.objects.all()
-    print(empreses_list)  # Línea de depuración
-    paginator = Paginator(empreses_list, 20)  # Mostra 20 empreses per pàgina
+    paginator = Paginator(empreses_list, 25)  # Mostra 25 empreses per pàgina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
-    print(page_obj.object_list)  # Línia de depuració
     
     return render(request, 'empreses.html', {'page_obj': page_obj})
 
 
-
 def llista_comptes(request):
     comptes_list = Compte.objects.all()
-    paginator = Paginator(comptes_list, 20)  # Mostra 10 clients per pàgina
+    paginator = Paginator(comptes_list, 25)  # Mostra 25 comptes per pàgina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
-    print(page_obj.object_list)  # Línia de depuració
     
     return render(request, 'comptes.html', {'page_obj': page_obj})
 
+
 def llista_operacions(request):
     operacions_list = Operacio.objects.all()
-    paginator = Paginator(operacions_list, 20)  # Mostra 10 clients per pàgina
+    paginator = Paginator(operacions_list, 25)  # Mostra 25 operacions per pàgina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
-    print(page_obj.object_list)  # Línia de depuració
     
     return render(request, 'operacions.html', {'page_obj': page_obj})
 
 
 def transferencies(request):
     transferencies_list = Transferencia.objects.all()
-    paginator = Paginator(transferencies_list, 20)  # Mostrará 20 transferencias por página
+    paginator = Paginator(transferencies_list, 25)  # Mostra 25 transferències per pàgina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
     return render(request, 'transferencies.html', {'page_obj': page_obj})
-
-
-

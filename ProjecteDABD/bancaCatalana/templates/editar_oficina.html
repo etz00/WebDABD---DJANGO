@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Editar Oficina</title>
+    <title>Editar Oficina Central</title>
 </head>
 <body>
-    <h1>Editar Oficina</h1>
-    <form method="post">
+    <h1>Editar Oficina Central: {{ oficina.id_oficina }}</h1>
+    <form method="post" action="">
         {% csrf_token %}
         <label for="id_oficina">ID Oficina:</label>
-        <input type="text" id="id_oficina" name="id_oficina" value="{{ oficina.id_oficina }}" required><br>
+        <input type="text" id="id_oficina" name="id_oficina" value="{{ oficina.id_oficina }}" required>
 
         <label for="empleats">Número d'empleats:</label>
-        <input type="number" id="empleats" name="empleats" value="{{ oficina.empleats }}" required><br>
+        <input type="number" id="empleats" name="empleats" value="{{ oficina.empleats }}" required>
 
-        <label for="nom_ciutat">Nom de la Ciutat:</label>
-        <input type="text" id="nom_ciutat" name="nom_ciutat" value="{{ oficina.nom_ciutat }}" required><br>
+        <label for="nom_ciutat">Ciutat:</label>
+        <input type="text" id="nom_ciutat" name="nom_ciutat" value="{{ oficina.nom_ciutat.nom }}" required>
 
         <button type="submit">Guardar</button>
     </form>
-    <a href="{% url 'oficines_centrals' %}">Tornar</a>
+    <a href="{% url 'oficines_centrals' %}">Cancelar</a>
 </body>
 </html>
-

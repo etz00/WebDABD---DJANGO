@@ -1,15 +1,60 @@
-<!-- gestors.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Gestors</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .pagination {
+            margin: 20px 0;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <h1>Llistat de Gestors</h1>
     <ul>
-        {% for gestor in gestors %}
+        {% for gestor in page_obj.object_list %}
             <li>Gestor ID: {{ gestor.id_empleat }} - Nom: {{ gestor.nom }} - Data d'Inici: {{ gestor.data_inici }}</li>
         {% endfor %}
     </ul>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; primera</a>
+                <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Pàgina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">següent</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <div>
+        <a href="{% url 'home' %}" class="btn">Volver al inicio</a>
+    </div>
 </body>
 </html>
