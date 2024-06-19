@@ -29,9 +29,22 @@
 </head>
 <body>
     <h1>Llistat de Transferències</h1>
+    
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Cerca pel IBAN Destí" value="{{ request.GET.search }}">
+        <button type="submit">Cercar</button>
+        <a href="{% url 'afegir_transferencia' %}" class="btn">Afegir Transferència</a>
+    </form>
+
     <ul>
         {% for transferencia in page_obj.object_list %}
-            <li>ID Operació: {{ transferencia.id_operacio }} - IBAN Destí: {{ transferencia.IBAN_desti }} - Import Real: {{ transferencia.import_real }}</li>
+            <li>ID Operació: {{ transferencia.id_operacio.id_operacio }} - IBAN Destí: {{ transferencia.IBAN_desti.iban }} - Import Real: {{ transferencia.import_real }}
+                <a href="{% url 'editar_transferencia' transferencia.id_operacio.id_operacio %}">Editar</a>
+                <form action="{% url 'eliminar_transferencia' transferencia.id_operacio.id_operacio %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
         {% endfor %}
     </ul>
 

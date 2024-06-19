@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Operació</title>
+</head>
+<body>
+    <h1>Editar Operació</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" value="{{ operacio.data }}" required><br><br>
+
+        <label for="import_real">Import:</label>
+        <input type="number" step="0.01" id="import_real" name="import_real" value="{{ operacio.import_real }}" required><br><br>
+
+        <label for="IBAN_origen">IBAN Origen:</label>
+        <select id="IBAN_origen" name="IBAN_origen" required>
+            {% for compte in comptes %}
+                <option value="{{ compte.iban }}" {% if operacio.IBAN_origen.iban == compte.iban %}selected{% endif %}>{{ compte.iban }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'llista_operacions' %}">Cancel·lar</a>
+</body>
+</html>

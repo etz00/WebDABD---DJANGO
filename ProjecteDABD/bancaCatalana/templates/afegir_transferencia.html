@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Afegir Transferència</title>
+</head>
+<body>
+    <h1>Afegir Transferència</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="id_operacio">ID Operació:</label>
+        <input type="text" id="id_operacio" name="id_operacio"><br>
+
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data"><br>
+
+        <label for="import_real">Import Real:</label>
+        <input type="text" id="import_real" name="import_real"><br>
+
+        <label for="IBAN_origen">IBAN Origen:</label>
+        <select id="IBAN_origen" name="IBAN_origen">
+            {% for compte in comptes %}
+                <option value="{{ compte.iban }}">{{ compte.iban }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="IBAN_desti">IBAN Destí:</label>
+        <select id="IBAN_desti" name="IBAN_desti">
+            {% for compte in comptes %}
+                <option value="{{ compte.iban }}">{{ compte.iban }}</option>
+            {% endfor %}
+        </select><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'transferencies' %}">Cancelar</a>
+</body>
+</html>

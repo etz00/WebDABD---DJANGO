@@ -3,7 +3,7 @@ from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from .models import Ciutat, OficinaCentral, Gestor, Sucursal, Client, Particular, Empresa, Compte, Operacio, Efectiu, Transferencia, CarrecComissions
+from .models import Ciutat, OficinaCentral, Gestor, Sucursal, Client, Particular, Empresa, Compte, Operacio, Efectiu, Transferencia
 
 
 def home(request):
@@ -61,11 +61,11 @@ def afegir_ciutat(request):
 def oficines_centrals(request):
     query = request.GET.get('search', '')
     if query:
-        oficines_list = OficinaCentral.objects.filter(nom_ciutat__nom__icontains=query)
+        oficines_list = OficinaCentral.objects.filter(id_oficina__icontains=query)
     else:
         oficines_list = OficinaCentral.objects.all()
     
-    paginator = Paginator(oficines_list, 25)
+    paginator = Paginator(oficines_list, 25)  # Mostra 25 oficines per pàgina
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -459,23 +459,118 @@ def eliminar_compte(request, iban):
     return render(request, 'comptes.html', {'page_obj': page_obj})
 
 def llista_operacions(request):
-    operacions_list = Operacio.objects.all()
-    paginator = Paginator(operacions_list, 25)  # Mostra 25 operacions per pàgina
-
+    query = request.GET.get('search', '')
+    if query:
+        operacions_list = Operacio.objects.filter(id_operacio__icontains=query)
+    else:
+        operacions_list = Operacio.objects.all()
+    
+    paginator = Paginator(operacions_list, 25)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
     return render(request, 'operacions.html', {'page_obj': page_obj})
 
+# Agregar Operacio
+def afegir_operacio(request):
+    if request.method == 'POST':
+        data = request.POST.get('data')
+        import_real = request.POST.get('import_real')
+        IBAN_origen_id = request.POST.get('IBAN_origen')
+
+        if IBAN_origen_id:
+            IBAN_origen = Compte.objects.get(iban=IBAN_origen_id)
+            Operacio.objects.create(data=data, import_real=import_real, IBAN_origen=IBAN_origen)
+            messages.success(request, 'Operació afegida correctament.')
+            return redirect('llista_operacions')
+
+    comptes = Compte.objects.all()[:200]  # Limitar a 200
+    return render(request, 'afegir_operacio.html', {'comptes': comptes})
+
+# Editar Operacio
+def editar_operacio(request, id_operacio):
+    operacio = get_object_or_404(Operacio, id_operacio=id_operacio)
+    if request.method == 'POST':
+        data = request.POST.get('data')
+        import_real = request.POST.get('import_real')
+        IBAN_origen_id = request.POST.get('IBAN_origen')
+
+        if IBAN_origen_id:
+            IBAN_origen = Compte.objects.get(iban=IBAN_origen_id)
+            operacio.data = data
+            operacio.import_real = import_real
+            operacio.IBAN_origen = IBAN_origen
+            operacio.save()
+            messages.success(request, 'Operació modificada correctament.')
+            return redirect('llista_operacions')
+
+    comptes = Compte.objects.all()[:200]  # Limitar a 200
+    return render(request, 'editar_operacio.html', {'operacio': operacio, 'comptes': comptes})
+
+
+
+def eliminar_operacio(request, id_operacio):
+    operacio = get_object_or_404(Operacio, id_operacio=id_operacio)
+    if request.method == 'POST':
+        operacio.delete()
+        return redirect('llista_operacions')
+    return render(request, 'llista_operacions')
+
 
 def transferencies(request):
-    transferencies_list = Transferencia.objects.all()
-    paginator = Paginator(transferencies_list, 25)  # Mostra 25 transferències per pàgina
+    query = request.GET.get('search', '')
+    if query:
+        transferencies_list = Transferencia.objects.filter(IBAN_desti__iban__icontains=query)
+    else:
+        transferencies_list = Transferencia.objects.all()
 
+    paginator = Paginator(transferencies_list, 25)  # Mostra 25 transferències per pàgina
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
     return render(request, 'transferencies.html', {'page_obj': page_obj})
+
+
+def afegir_transferencia(request):
+    if request.method == 'POST':
+        id_operacio = request.POST.get('id_operacio')
+        IBAN_desti = request.POST.get('IBAN_desti')
+        import_real = request.POST.get('import_real')
+
+        if id_operacio and IBAN_desti and import_real:
+            operacio = Operacio.objects.create(id_operacio=id_operacio, data=request.POST.get('data'), import_real=import_real, IBAN_origen_id=request.POST.get('IBAN_origen'))
+            Transferencia.objects.create(id_operacio=operacio, IBAN_desti=Compte.objects.get(iban=IBAN_desti), import_real=import_real)
+            messages.success(request, "Transferencia afegida correctament.")
+            return redirect('transferencies')
+    comptes = Compte.objects.all()[:200]
+    return render(request, 'afegir_transferencia.html', {'comptes': comptes})
+
+def editar_transferencia(request, id_operacio):
+    transferencia = get_object_or_404(Transferencia, id_operacio=id_operacio)
+    if request.method == 'POST':
+        IBAN_desti = request.POST.get('IBAN_desti')
+        import_real = request.POST.get('import_real')
+
+        if IBAN_desti and import_real:
+            transferencia.IBAN_desti = Compte.objects.get(iban=IBAN_desti)
+            transferencia.import_real = import_real
+            transferencia.save()
+            messages.success(request, "Transferencia actualitzada correctament.")
+            return redirect('transferencies')
+    comptes = Compte.objects.all()[:200]
+    return render(request, 'editar_transferencia.html', {'transferencia': transferencia, 'comptes': comptes})
+
+def eliminar_transferencia(request, id_operacio):
+    transferencia = get_object_or_404(Transferencia, id_operacio=id_operacio)
+    if request.method == 'POST':
+        operacio = transferencia.id_operacio
+        transferencia.delete()
+        operacio.delete()
+        messages.success(request, "Transferencia eliminada correctament.")
+        return redirect('transferencies')
+    return render(request, 'transferencies.html', {'page_obj': Transferencia.objects.all()})
+
+
 
 
 def buscar_nifs(request):

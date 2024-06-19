@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Transferència</title>
+</head>
+<body>
+    <h1>Editar Transferència</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="IBAN_desti">IBAN Destí:</label>
+        <select id="IBAN_desti" name="IBAN_desti">
+            {% for compte in comptes %}
+                <option value="{{ compte.iban }}" {% if compte.iban == transferencia.IBAN_desti.iban %}selected{% endif %}>{{ compte.iban }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="import_real">Import Real:</label>
+        <input type="text" id="import_real" name="import_real" value="{{ transferencia.import_real }}"><br>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'transferencies' %}">Cancelar</a>
+</body>
+</html>

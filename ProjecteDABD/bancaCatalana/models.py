@@ -122,13 +122,3 @@ class Transferencia(models.Model):
 
     class Meta:
         db_table = 'transferencia'
-
-class CarrecComissions(models.Model):
-    id_operacio = models.OneToOneField(Operacio, on_delete=models.CASCADE, primary_key=True, db_column='id_operacio')
-    import_real = models.DecimalField(max_digits=15, decimal_places=2)
-
-    def __str__(self):
-        return f'CarrecComissions {self.id_operacio}'
-
-    class Meta:
-        db_table = 'carrec_comissions'

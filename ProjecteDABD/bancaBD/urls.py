@@ -55,6 +55,12 @@ urlpatterns = [
     path('comptes/editar/<str:iban>/', views.editar_compte, name='editar_compte'),
     path('comptes/eliminar/<str:iban>/', views.eliminar_compte, name='eliminar_compte'),
     path('operacions/', views.llista_operacions, name='llista_operacions'),
+    path('operacions/afegir/', views.afegir_operacio, name='afegir_operacio'),
+    path('operacions/editar/<int:id_operacio>/', views.editar_operacio, name='editar_operacio'),
+    path('operacions/eliminar/<int:id_operacio>/', views.eliminar_operacio, name='eliminar_operacio'),
     path('transferencies/', views.transferencies, name='transferencies'),
+    path('transferencies/afegir/', views.afegir_transferencia, name='afegir_transferencia'),
+    path('transferencies/editar/<int:id_operacio>/', views.editar_transferencia, name='editar_transferencia'),
+    path('transferencies/eliminar/<int:id_operacio>/', views.eliminar_transferencia, name='eliminar_transferencia'),
     path('buscar_nifs/', views.buscar_nifs, name='buscar_nifs'),
 ]
